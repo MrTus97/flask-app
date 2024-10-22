@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kết quả Bát Tự</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+    <script>
+      function showObject() {
+          const year = document.getElementById('yearSelect').value;
+          const objects = JSON.parse(document.getElementById('objectsData').textContent);
+          //document.getElementById('objectDisplay').textContent = objects[year];
+          const ss = `
+            <p>Thiên can năm sinh: ${objects[year]['year_heavenly_by_birth']} và năm ${objects[year]['stem_year']} - ${objects[year]['heavenly_by_year']}</p>
+            <p>Địa Chi năm sinh: ${objects[year]['year_earthly_by_birth']} và năm ${objects[year]['branch_year']} - ${objects[year]['earthly_by_year']}</p>
+            <div class="center-div">
+              <img src="/static/${objects[year]['hexagram_of_year']['icon']}" alt="My GIF Image">
+              <p class="highlight"> ${objects[year]['hexagram_of_year']['name']} </p>
+            </div>
+            `;
+          document.getElementById('objectDisplay').innerHTML = ss;
+      }
+  </script>
+  </head>
+  <body>
+    <div class="result-container">
+      <h1>Kết quả phân tích</h1>
+      <h3> Thông tin cá nhân: </h3>
+      <p><strong>Họ và tên:</strong> {{ name }}</p>
+      <p><strong>Sinh nhật:</strong> {{ year_of_birth }}/{{month_of_birth}}/{{day_of_birth}}</p>
+      <p><strong>Giờ sinh:</strong> {{ hour_of_birth }}
+
+      <h3> Thiên can, địa chi theo năm sinh: </h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Mục</th>
+            <th>Năm</th>
+            <th>Tháng</th>
+            <th>Ngày</th>
+            <th>Giờ</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Thiên can</th>
+            {% for item in heavenly_by_birth %}
+                <td>{{ item }}</td>
+            {% endfor %}
+          </tr>
+          <tr>
+            <th>Địa Chi</th>
+            {% for item in earthly_by_birth %}
+                <td>{{ item }}</td>
+            {% endfor %}
+          </tr>
+        </tbody>
+      </table>
+
+      <h3> Quẻ theo năm sinh </h3>
+      <div class="center-div">
+        <img src="{{ url_for('static', filename=hexagram_of_birth.icon) }}" alt="My GIF Image">
+        <p class="highlight"> {{ hexagram_of_birth.name }}
+      </div>
+      <h2>Xem theo năm</h2>
+      <div class="dflex">
+        <p> Vui lòng chọn năm: </p>
+        <select id="yearSelect" name="year" onchange="showObject()">
+            <option value="">Vui lòng chọn năm</option>
+            {% for year in year_range %}
+                <option value={{ year }}>{{ year }}</option>
+            {% endfor %}
+        </select>
+        
+      </div>
+      <div id="objectDisplay">
+      </div>
+      <script>
+        // Đưa dữ liệu object vào một biến JavaScript để sử dụng
+        const objectsData = {{ results | tojson }};
+        const element = document.getElementById('objectsData')
+        if (element) {
+          element.textContent = JSON.stringify(objectsData);
+        }
+      </script>
+      <!-- Để truyền dữ liệu objects vào JavaScript -->
+      <script id="objectsData" type="application/json">{{ results | tojson }}</script>
+      <a href="{{ url_for('index') }}" class="btn btn-secondary">Quay lại</a>
+  </body>
+</html>

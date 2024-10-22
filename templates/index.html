@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bát Tự Form</title>
+    <link
+      rel="stylesheet"
+      href="{{ url_for('static', filename='styles.css') }}"
+    />
+  </head>
+  <body>
+    <div class="form-container">
+      <h2>Nhập thông tin Bát Tự</h2>
+      <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+          <label>{{ form.name.label }}</label>
+          {{ form.name(class="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.year.label }}</label>
+          {{ form.year(class="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.month.label }}</label>
+          {{ form.month(class="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.day.label }}</label>
+          {{ form.day(class="form-control") }}
+        </div>
+        <div class="form-group">
+          <label>{{ form.hour.label }}</label>
+          {{ form.hour(class="form-control") }}
+        </div>
+        <div class="form-group">
+          <button type="submit" class="btn btn-primary">Gửi</button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
